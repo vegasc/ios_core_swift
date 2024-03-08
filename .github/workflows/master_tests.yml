@@ -20,7 +20,6 @@ jobs:
       run: |
         chmod +x ./.github/workflows/sh/install_apple_cert.sh
         chmod +x ./.github/workflows/sh/xcode_clean.sh
-        chmod +x ./.github/workflows/sh/xcode_build.sh
         chmod +x ./.github/workflows/sh/xcode_run_tests.sh
     - name: Install Apple Certificate
       env:
