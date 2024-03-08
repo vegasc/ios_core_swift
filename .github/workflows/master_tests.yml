@@ -3,10 +3,10 @@ name: Master Tests
 on:
   push:
     branches:
-      - cicd/github/workflows
+      - master
   pull_request:
     branches:
-      - cicd/github/workflows
+      - master
 
 jobs:
   build-and-test:
