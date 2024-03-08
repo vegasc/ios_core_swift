@@ -1,0 +1,35 @@
+name: Master Tests
+
+on:
+  push:
+    branches:
+      - cicd/github/workflows
+  pull_request:
+    branches:
+      - cicd/github/workflows
+
+jobs:
+  build-and-test:
+    runs-on: macos-14
+    strategy:
+      matrix:
+        destination: ['platform=iOS Simulator,OS=17.2,name=iPhone 14 Pro']
+    steps:
+    - uses: actions/checkout@v3
+    - name: Prepare scripts
+      run: |
+        chmod +x ./.github/workflows/sh/install_apple_cert.sh
+        chmod +x ./.github/workflows/sh/xcode_clean.sh
+        chmod +x ./.github/workflows/sh/xcode_build.sh
+        chmod +x ./.github/workflows/sh/xcode_run_tests.sh
+    - name: Install Apple Certificate
+      env:
+          BUILD_CERTIFICATE_BASE64: ${{ secrets.BUILD_CERTIFICATE_BASE64 }}
+          P12_PASSWORD: ${{ secrets.P12_PASSWORD }}
+          BUILD_PROVISION_PROFILE_BASE64: ${{ secrets.BUILD_PROVISION_PROFILE_BASE64 }}
+          KEYCHAIN_PASSWORD: ${{ secrets.KEYCHAIN_PASSWORD }}
+      run: ./.github/workflows/sh/install_apple_cert.sh
+    - name: Clean
+      run: ./.github/workflows/sh/xcode_clean.sh
+    - name: Run Tests
+      run: ./.github/workflows/sh/xcode_run_tests.sh
